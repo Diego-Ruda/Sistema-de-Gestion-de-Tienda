@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Food</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Fast Food</h1>
+  <a href="admin.html" class="admin-btn">Admin</a>
+</header>
+
+<main class="container">
+
+  <!-- PRODUCTOS -->
+  <section class="productos">
+    <h2>Productos</h2>
+
+    <div class="tabla-productos">
+      <div class="fila encabezado">
+        <span>Producto</span>
+        <span>Precio</span>
+        <span>Stock</span>
+        <span>Acción</span>
+      </div>
+      <ul id="lista-productos"></ul>
+    </div>
+  </section>
+
+  <!-- ORDEN -->
+  <section class="orden">
+    <h2>Orden</h2>
+    <ul id="lista-orden"></ul>
+
+    <div class="total">
+      <p>Total: $<span id="total">0</span></p>
+
+      <input id="pago" type="number" placeholder="Monto pagado" />
+      <p>Cambio: $<span id="cambio">0</span></p>
+
+      <button id="confirmar">Confirmar venta</button>
+    </div>
+  </section>
+
+</main>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-contenido">
+      <span class="cerrar" id="cerrarModal">&times;</span>
+
+      <p id="mensajeModal"></p>
+
+      <div id="contenidoModal"></div>
+    </div>
+  </div>
+
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Food - Admin</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Administración</h1>
+  <a href="index.html" class="admin-btn">Caja</a>
+</header>
+
+<main class="admin-container">
+
+  <section class="card">
+    <h2>Productos</h2>
+
+    <!-- FORMULARIO -->
+    <form id="form-producto">
+      <input id="nombre" placeholder="Nombre" required />
+      <input id="precio" type="number" placeholder="Precio" required />
+      <input id="stock" type="number" placeholder="Stock" required />
+      <button>Agregar</button>
+    </form>
+
+    <!-- TABLA DE PRODUCTOS-->
+    <div class="tabla-productos admin-tabla-productos">
+      
+      <div class="fila encabezado">
+        <span>Producto</span>
+        <span>Precio</span>
+        <span>Stock</span>
+        <span>Acción</span>
+      </div>
+
+      <ul id="lista-productos"></ul>
+    </div>
+  </section>
+
+  <!-- REPORTES -->
+  <section class="card">
+    <h2>Reportes</h2>
+
+    <button id="btn-ventas-totales">Ventas totales</button>
+    <button id="btn-producto-mas-vendido">Producto más vendido</button>
+  </section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-contenido">
+    <span class="cerrar" id="cerrarModal">&times;</span>
+    <p id="mensajeModal"></p>
+    <div id="contenidoModal"></div>
+  </div>
+</div>
+
+<script src="/admin.js"></script>
+</body>
+</html>

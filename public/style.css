@@ -1,0 +1,205 @@
+/*
+==============================
+          GENERAL
+==============================
+*/
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f4f6f8;
+}
+
+.topbar {
+  background: #e63946;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-btn {
+  background: white;
+  color: #e63946;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+section {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+button {
+  background: #457b9d;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: #1d3557;
+}
+
+.total {
+  margin-top: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 6px;
+  margin: 8px 0;
+}
+
+/* 
+============================
+   TABLA PRODUCTOS-INDEX
+===========================
+*/
+.tabla-productos {
+  margin-top: 10px;
+}
+
+.tabla-productos .encabezado {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  font-weight: bold;
+  padding: 8px 0;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 5px;
+}
+
+#lista-productos li {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+#lista-productos li span,
+.tabla-productos .encabezado span {
+  text-align: center;
+}
+
+#lista-productos li span:first-child,
+.tabla-productos .encabezado span:first-child {
+  text-align: left;
+}
+
+/* 
+=============================
+   ADMIN - TABLA PRODUCTOS
+=============================
+*/
+.admin-tabla-productos {
+  margin-top: 10px;
+}
+
+.admin-tabla-productos .encabezado {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  font-weight: bold;
+  padding: 8px 0;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 5px;
+}
+
+.admin-tabla-productos #lista-productos li {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-tabla-productos #lista-productos li span {
+  text-align: center;
+}
+
+.admin-tabla-productos #lista-productos li span:first-child {
+  text-align: left;
+}
+
+.admin-tabla-productos .acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.admin-tabla-productos .btn-editar {
+  background: #f4a261;
+}
+
+.admin-tabla-productos .btn-eliminar {
+  background: #e63946;
+}
+
+.admin-tabla-productos .btn-editar:hover {
+  background: #e76f51;
+}
+
+.admin-tabla-productos .btn-eliminar:hover {
+  background: #c1121f;
+}
+
+/* 
+=========================
+          MODAL
+========================= 
+*/
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-contenido {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 300px;
+}
+
+.cerrar {
+  float: right;
+  cursor: pointer;
+  font-size: 22px;
+}
