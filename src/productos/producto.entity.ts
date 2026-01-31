@@ -1,16 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, VersionColumn } from 'typeorm';
 
 @Entity({ name: 'producto' })
 export class Producto {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  nombre: string;
+  nombre!: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  precio: number;
+  precio!: number;
 
   @Column()
-  stock: number;
+  stock!: number;
+
+  @VersionColumn() // Optimistic lock
+  version!: number;
+
+  @Column({ nullable: true }) // <-- nuevo campo
+  descripcion!: string;
 }

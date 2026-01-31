@@ -10,7 +10,10 @@
 
 <header class="topbar">
   <h1>Administración</h1>
-  <a href="index.html" class="admin-btn">Caja</a>
+  <div class="botones-btn">
+    <a href="index.html" class="admin-btn">Caja</a>
+    <a href="#" id="btnCerrar" class="cerrar-btn">Cerrar sesión</a>
+  </div>
 </header>
 
 <main class="admin-container">
@@ -44,8 +47,61 @@
   <section class="card">
     <h2>Reportes</h2>
 
-    <button id="btn-ventas-totales">Ventas totales</button>
-    <button id="btn-producto-mas-vendido">Producto más vendido</button>
+    <a id="btn-ventas-dia"></a>
+    <a id="btn-ventas-semana"></a>
+    <a id="btn-ventas-mes"></a>
+
+    <a id="btn-prod-dia"></a>
+    <a id="btn-prod-semana"></a>
+    <a id="btn-prod-mes"></a>
+
+
+    <div class="dashboard">
+
+      <!-- VENTAS TOTALES -->
+      <div class="reporte">
+        <h2>Ventas totales</h2>
+        <hr>
+
+        <div class="reporte-fila">
+          <span>Día</span>
+          <span id="ventas-dia">—</span>
+        </div>
+
+        <div class="reporte-fila">
+          <span>Semana</span>
+          <span id="ventas-semana">—</span>
+        </div>
+
+        <div class="reporte-fila">
+          <span>Mes</span>
+          <span id="ventas-mes">—</span>
+        </div>
+      </div>
+
+      <!-- PRODUCTO MÁS VENDIDO -->
+      <div class="reporte">
+        <h2>Producto más vendido</h2>
+        <hr>
+
+        <div class="reporte-fila">
+          <span>Día</span>
+          <span id="prod-dia">—</span>
+        </div>
+
+        <div class="reporte-fila">
+          <span>Semana</span>
+          <span id="prod-semana">—</span>
+        </div>
+
+        <div class="reporte-fila">
+          <span>Mes</span>
+          <span id="prod-mes">—</span>
+        </div>
+      </div>
+
+    </div>
+
   </section>
 
 </main>

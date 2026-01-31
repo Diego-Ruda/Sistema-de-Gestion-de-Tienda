@@ -2,33 +2,30 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
 
-import { Producto } from './productos/producto.entity';
-import { Venta } from './ventas/venta.entity';
 import { ProductosModule } from './productos/productos.module';
 import { VentasModule } from './ventas/ventas.module';
 import { ReportesModule } from './reportes/reportes.module';
+import { AuthModule } from './auth/auth.module';
+import { typeOrmConfig } from './typeorm.config';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
 
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '3810',
-      database: 'fastfood',
-      entities: [Producto, Venta],
-      synchronize: true,
+    TypeOrmModule.forRoot(typeOrmConfig),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
 
     ProductosModule,
     VentasModule,
     ReportesModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

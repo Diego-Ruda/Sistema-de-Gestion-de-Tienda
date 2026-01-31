@@ -4,17 +4,17 @@ import { Type } from 'class-transformer';
 
 class ProductoVenta {
   @IsNumber()
-  productoId: number;
+  productoId!: number;
 
   @IsNumber()
-  cantidad: number;
+  cantidad!: number;
 }
 
 export class CreateVentaDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductoVenta)
-  productos: ProductoVenta[];
+  productos!: ProductoVenta[];
 
   @IsOptional()
   @IsString()

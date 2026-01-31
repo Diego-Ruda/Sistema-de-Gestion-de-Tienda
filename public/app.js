@@ -1,8 +1,34 @@
 console.log('APP JS CARGADO');
 
 document.addEventListener('DOMContentLoaded', () => {
+  
+  /*
+  =================================
+        VERIFICACION DE ROLES
+  =================================
+  */
+  console.log('APP JS CARGADO');
 
   const API_URL = 'http://localhost:3000';
+  let modalEsLogin = false; 
+  const modal = document.getElementById('modal');
+  const token = localStorage.getItem('token');
+   modal.style.backgroundColor = "black";
+
+  if (token) {
+    console.log('SESION EXISTENTE');
+    modalEsLogin = false;
+    modal.style.display = 'none';
+    iniciarApp();
+  } else {
+    console.log('SESION NO INICIADA')
+    controlarUI();
+    mostrarLogin();
+  }
+  /*
+  =================================
+  =================================
+  */
 
   const listaProductos = document.getElementById('lista-productos');
   const listaOrden = document.getElementById('lista-orden');
@@ -16,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
          MODAL
   ===================
    */
-  const modal = document.getElementById('modal');
+
   const mensajeModal = document.getElementById('mensajeModal');
   const contenidoModal = document.getElementById('contenidoModal');
   const cerrarModal = document.getElementById('cerrarModal');
@@ -25,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mensajeModal.textContent = mensaje;
     contenidoModal.innerHTML = contenidoHTML;
     modal.style.display = 'flex';
+    modal.style.backgroundColor = "rgba(0,0,0,0.5)";
   }
 
   function cerrarModalFn() {
@@ -34,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   cerrarModal.addEventListener('click', cerrarModalFn);
 
   window.addEventListener('click', (e) => {
-    if (e.target === modal) cerrarModalFn();
+    if (e.target === modal && !modalEsLogin) cerrarModalFn();
   });
 
   if (!btnConfirmar) {
@@ -48,9 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================
      CARGAR PRODUCTOS
   ============================= */
+
   async function cargarProductos() {
     const res = await fetch(`${API_URL}/productos/disponibles`);
     productos = await res.json();
+    console.log(productos); 
     renderProductos();
   }
 
@@ -81,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         CARRITO
   ==================== 
   */
+
   function agregarProducto(id) {
     const producto = productos.find(p => p.id === id);
     const item = carrito.find(i => i.id === id);
@@ -95,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cantidad: 1,
       });
     }
-
     procesoOrden();
   }
 
@@ -172,18 +201,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const pago = Number(pagoInput.value);
 
     if (carrito.length === 0) {
-      abrirModal('❌ No hay productos en la orden');
+      abrirModal(' No hay productos en la orden');
       return;
     }
 
     if (pago < total) {
-      abrirModal('❌ Pago insuficiente');
+      abrirModal(' Pago insuficiente');
       return;
     }
 
     await fetch(`${API_URL}/ventas`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders(),
       body: JSON.stringify({
         cliente: 'Mostrador',
         productos: carrito.map(i => ({
@@ -201,13 +230,151 @@ document.addEventListener('DOMContentLoaded', () => {
     await cargarProductos();
     procesoOrden();
 
-    abrirModal('✅ Venta registrada correctamente');
+    abrirModal(' Venta registrada correctamente');
   });
+
+  /* 
+  ===================
+        MOSTRAR LOGIN
+  ===================
+  */
+  function mostrarLogin() {
+
+    console.log('MOSTRANDO LOGIN');
+
+    const modal = document.getElementById('modal');
+    const contenido = document.getElementById('contenidoModal');
+    const mensaje = document.getElementById('mensajeModal');
+    const cerrar = document.getElementById('cerrarModal');
+
+    modalEsLogin = true;
+
+    mensaje.textContent = 'Ingreso al sistema';
+    cerrar.style.display = 'none';
+
+    contenido.innerHTML = `
+      <input id="numeroEmpleado" type="number" placeholder="N° de Empleado" />
+      <input id="password" type="password" placeholder="Contraseña" />
+      <button id="btnLogin">Ingresar</button>
+    `;
+
+    modal.style.display = 'flex';
+
+    document.getElementById('btnLogin')
+      .addEventListener('click', login);
+  }
+
+  /* 
+  ==============
+      LOGIN
+  ==============
+  */
+
+  async function login() {
+    const numeroEmpleado = document.getElementById('numeroEmpleado').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ numeroEmpleado, password }),
+      });
+
+      if (!res.ok) throw new Error('Credenciales incorrectas');
+
+      const data = await res.json();
+
+      localStorage.setItem('token', data.access_token);
+
+      const payloadBase64 = data.access_token.split('.')[1];
+      const payload = JSON.parse(atob(payloadBase64));
+      localStorage.setItem('role', payload.rol);
+
+      console.log('LOGIN OK:', payload);
+
+      modalEsLogin = false;
+      cerrarModalLogin();
+      iniciarApp();
+
+    } catch (error) {
+      console.error(error);
+      alert('Credenciales incorrectas');
+    }
+  }
+
+  /*
+  =========================
+        ESTILOS
+  =========================
+  */
+
+  function controlarUI() {
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    const adminBtn = document.querySelector('.admin-btn');
+    const cerrarBtn = document.getElementById('btnCerrar');
+
+    //no se muestra nada
+    if (!token) {
+      if (adminBtn) adminBtn.style.display = 'none';
+      if (cerrarBtn) cerrarBtn.style.display = 'none';
+      return;
+    }
+    if (cerrarBtn) cerrarBtn.style.display = 'inline-block';
+
+    //el admin ve
+    if (adminBtn) {
+      if (role && role.toUpperCase() === 'ADMIN') {
+        adminBtn.style.display = 'inline-block';
+      } else {
+        adminBtn.style.display = 'none';
+      }
+    }
+  }
+
+  /*
+  =========================
+        CERRAR LOGIN
+  =========================
+  */
+  const cerrarbtn = document.getElementById('btnCerrar');
+
+  if (cerrarbtn) {
+    cerrarbtn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      localStorage.clear();
+      controlarUI();
+      window.location.replace('index.html');
+    });
+  }
+
+  function authHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+  }
+
+  function cerrarModalLogin() {
+    modal.style.display = 'none';
+  }
 
   /* 
   ==============
      INICIAR
   ==============
    */
-  cargarProductos();
+
+  function iniciarApp() {
+    console.log('INICIANDO APP');
+    cargarProductos();
+    controlarUI();
+  }
 });
+

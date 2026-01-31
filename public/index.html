@@ -7,57 +7,61 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <header class="topbar">
+    <h1>Logo</h1>
+    <div class="botones-btn">
+      <a href="admin.html" class="admin-btn">Administración</a>
+      <a href="#" id="btnCerrar" class="cerrar-btn">Cerrar sesión</a>
+    </div>
+    
+  </header>
 
-<header class="topbar">
-  <h1>Fast Food</h1>
-  <a href="admin.html" class="admin-btn">Admin</a>
-</header>
 
-<main class="container">
+  <main class="container">
 
-  <!-- PRODUCTOS -->
-  <section class="productos">
-    <h2>Productos</h2>
+    <!-- PRODUCTOS -->
+    <section class="productos">
+      <h2>Productos</h2>
 
-    <div class="tabla-productos">
-      <div class="fila encabezado">
-        <span>Producto</span>
-        <span>Precio</span>
-        <span>Stock</span>
-        <span>Acción</span>
+      <div class="tabla-productos">
+        <div class="fila encabezado">
+          <span>Producto</span>
+          <span>Precio</span>
+          <span>Stock</span>
+          <span>Acción</span>
+        </div>
+        <ul id="lista-productos"></ul>
       </div>
-      <ul id="lista-productos"></ul>
+    </section>
+
+    <!-- ORDEN -->
+    <section class="orden">
+      <h2>Orden</h2>
+      <ul id="lista-orden"></ul>
+
+      <div class="total">
+        <p>Total: $<span id="total">0</span></p>
+
+        <input id="pago" type="number" placeholder="Monto pagado" />
+        <p>Cambio: $<span id="cambio">0</span></p>
+
+        <button id="confirmar">Confirmar venta</button>
+      </div>
+    </section>
+
+  </main>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal">
+      <div class="modal-contenido">
+        <span class="cerrar" id="cerrarModal">&times;</span>
+
+        <p id="mensajeModal"></p>
+
+        <div id="contenidoModal"></div>
+      </div>
     </div>
-  </section>
 
-  <!-- ORDEN -->
-  <section class="orden">
-    <h2>Orden</h2>
-    <ul id="lista-orden"></ul>
-
-    <div class="total">
-      <p>Total: $<span id="total">0</span></p>
-
-      <input id="pago" type="number" placeholder="Monto pagado" />
-      <p>Cambio: $<span id="cambio">0</span></p>
-
-      <button id="confirmar">Confirmar venta</button>
-    </div>
-  </section>
-
-</main>
-
-  <!-- MODAL -->
-  <div class="modal" id="modal">
-    <div class="modal-contenido">
-      <span class="cerrar" id="cerrarModal">&times;</span>
-
-      <p id="mensajeModal"></p>
-
-      <div id="contenidoModal"></div>
-    </div>
-  </div>
-
-<script src="/app.js"></script>
+  <script src="/app.js"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ body {
 }
 
 .topbar {
-  background: #e63946;
+  background: #231a47;
   color: white;
   padding: 15px 20px;
   display: flex;
@@ -24,11 +24,36 @@ body {
 
 .admin-btn {
   background: white;
-  color: #e63946;
+  color: #231a47;
   padding: 8px 12px;
   text-decoration: none;
   border-radius: 4px;
   font-weight: bold;
+}
+
+.admin-btn:hover {
+background: #231a47;
+color: white;
+}
+
+.cerrar-btn {
+  background: white;
+  color: #231a47;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.cerrar-btn:hover {
+background: #231a47;
+color: white;
+}
+
+.botones-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
 
 .container {
@@ -39,7 +64,7 @@ body {
 }
 
 section {
-  background: white;
+  background: #231a473b;
   padding: 15px;
   border-radius: 8px;
 }
@@ -57,16 +82,20 @@ li {
 }
 
 button {
-  background: #457b9d;
-  color: white;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
   border: none;
   padding: 6px 10px;
   cursor: pointer;
   border-radius: 4px;
+  border: 2px solid #231a47;
+  font-size: 15px; 
+  font-weight: bold;
 }
 
 button:hover {
-  background: #1d3557;
+  background: #35275c;
+  color: #ffffff;
 }
 
 .total {
@@ -170,6 +199,42 @@ input {
 .admin-tabla-productos .btn-eliminar:hover {
   background: #c1121f;
 }
+/* 
+=================================
+        TABLA DE REPORTE
+=================================
+*/
+.dashboard {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.reporte {
+  width: 320px;
+  font-family: sans-serif;
+}
+
+.reporte h2 {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.reporte hr {
+  border: none;
+  border-top: 2px solid #000;
+  margin-bottom: 15px;
+}
+
+.reporte-fila {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-weight: 500;
+}
+
 
 /* 
 =========================
@@ -203,3 +268,4 @@ input {
   cursor: pointer;
   font-size: 22px;
 }
+

@@ -7,6 +7,7 @@ import {
   Body,
   ParseIntPipe,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { VentasService } from './ventas.service';
 import { CreateVentaDto } from './dto/create-ventas.dto';
@@ -17,8 +18,15 @@ import {
   ApiOperation,
   ApiResponse,
   ApiParam,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../auth/roles.enum';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('Ventas')
 @Controller('ventas')
 export class VentasController {
@@ -32,6 +40,7 @@ export class VentasController {
     type: Venta,
   })
   @Post()
+  @Roles(Role.EMPLEADO, Role.ADMIN)
   async create(@Body() createVentaDto: CreateVentaDto) {
     return this.ventasService.create(createVentaDto);
   }
@@ -44,6 +53,7 @@ export class VentasController {
     type: [Venta],
   })
   @Get()
+  @Roles(Role.ADMIN)
   async findAll() {
     return this.ventasService.findAll();
   }
@@ -61,6 +71,7 @@ export class VentasController {
     description: 'Venta no encontrada',
   })
   @Get(':id')
+  @Roles(Role.ADMIN)
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.ventasService.findOne(id);
   }
@@ -77,6 +88,7 @@ export class VentasController {
     description: 'Venta no encontrada',
   })
   @Delete(':id')
+  @Roles(Role.ADMIN)
   async remove(@Param('id', ParseIntPipe) id: number) {
     return this.ventasService.remove(id);
   }
@@ -90,6 +102,7 @@ export class VentasController {
     type: Venta,
   })
   @Patch(':id')
+  @Roles(Role.ADMIN)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateVentaDto: UpdateVentaDto,

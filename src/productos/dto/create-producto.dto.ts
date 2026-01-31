@@ -2,13 +2,13 @@ import { IsString,IsNumber,Min,IsInt} from "class-validator";
 
 export class CreateProductoDto{
     @IsString()
-    nombre:string;
+    nombre!:string;
 
     @IsNumber()
     @Min(0)
-    precio:number;
+    precio!:number;
 
     @IsInt()
     @Min(0)
-    stock:number;
+    stock!:number;
 }

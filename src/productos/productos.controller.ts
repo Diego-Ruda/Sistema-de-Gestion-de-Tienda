@@ -8,6 +8,7 @@ import {
   NotFoundException,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
@@ -19,6 +20,10 @@ import {
   ApiResponse,
   ApiParam,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../auth/roles.enum';
 
 @ApiTags('Productos')
 @Controller('productos')
@@ -88,6 +93,8 @@ export class ProductosController {
     type: Producto,
   })
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   agregar(@Body() data: CreateProductoDto): Promise<Producto> {
     return this.productosService.agregarProducto(data);
   }
@@ -103,6 +110,8 @@ export class ProductosController {
     type: Producto,
   })
   @Put(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async actualizar(
     @Param('id', ParseIntPipe) id: number,
     @Body() cambios: UpdateProductoDto
@@ -124,6 +133,8 @@ export class ProductosController {
     description: 'Producto no encontrado',
   })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async eliminar(
     @Param('id', ParseIntPipe) id: number
   ): Promise<{ mensaje: string }> {

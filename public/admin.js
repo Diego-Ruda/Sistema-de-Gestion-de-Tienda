@@ -2,6 +2,39 @@ console.log('ADMIN JS CARGADO');
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  console.log('ADMIN JS CARGADO - INICIO');
+
+  /*
+  =================================
+        PROTECCION DE RUTA
+  =================================
+  */
+  const token = localStorage.getItem('token');
+  const userRole = localStorage.getItem('role');
+  const btnCerrar = document.getElementById('btnCerrar');
+
+  if (!token || userRole !== 'admin') {
+    window.location.replace('index.html');
+  }
+
+  if (btnCerrar) {
+    btnCerrar.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      console.log('CERRANDO SESIÓN');
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('user'); 
+
+      window.location.replace('index.html');
+    });
+  }
+  /*
+  =================================
+  =================================
+  */
+
   const API_URL = 'http://localhost:3000';
 
   const listaProductos = document.getElementById('lista-productos');
@@ -9,10 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const nombreInput = document.getElementById('nombre');
   const precioInput = document.getElementById('precio');
   const stockInput = document.getElementById('stock');
-
-  const btnVentasTotales = document.getElementById('btn-ventas-totales');
-  const btnProductoMasVendido = document.getElementById('btn-producto-mas-vendido');
-
   /* 
   ================
         MODAL
@@ -45,7 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
   ==========================
   */
   async function cargarProductos() {
-    const res = await fetch(`${API_URL}/productos`);
+    const res = await fetch(`${API_URL}/productos`,{
+      headers: authHeaders(),
+    });
     const productos = await res.json();
 
     listaProductos.innerHTML = '';
@@ -83,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     await fetch(`${API_URL}/productos`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders(),
       body: JSON.stringify({
         nombre: nombreInput.value,
         precio: Number(precioInput.value),
@@ -111,7 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     document.getElementById('confirmarEliminar').onclick = async () => {
-      await fetch(`${API_URL}/productos/${id}`, { method: 'DELETE' });
+      await fetch(`${API_URL}/productos/${id}`, { 
+        method: 'DELETE',
+        headers: authHeaders(),
+      });
       cerrarModal();
       cargarProductos();
     };
@@ -146,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('guardar').onclick = async () => {
       await fetch(`${API_URL}/productos/${p.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders(),
         body: JSON.stringify({
           nombre: document.getElementById('editNombre').value,
           precio: Number(document.getElementById('editPrecio').value),
@@ -166,28 +200,38 @@ document.addEventListener('DOMContentLoaded', () => {
       REPORTES
   ================
   */
-  btnVentasTotales.addEventListener('click', async () => {
-    const res = await fetch(`${API_URL}/reportes/ventas-totales`);
-    const data = await res.json();
 
-    abrirModal(
-      'Ventas totales',
-      `<p><strong>Total vendido:</strong> $${data.total}</p>`
-    );
-  });
+  function authHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+  }
 
-  btnProductoMasVendido.addEventListener('click', async () => {
-    const res = await fetch(`${API_URL}/reportes/producto-mas-vendido`);
-    const data = await res.json();
+  async function cargarDashboard() {
+    const headers = authHeaders();
 
-    abrirModal(
-      'Producto más vendido',
-      `
-        <p><strong>${data.nombre}</strong></p>
-        <p>Cantidad vendida: <strong>${data.cantidad}</strong></p>
-      `
-    );
-  });
+    // VENTAS TOTALES (dia-semana-mes)
+    const vDia = await fetch(`${API_URL}/reportes/ventas-dia`, { headers }).then(r => r.json());
+    const vSemana = await fetch(`${API_URL}/reportes/ventas-semana`, { headers }).then(r => r.json());
+    const vMes = await fetch(`${API_URL}/reportes/ventas-mes`, { headers }).then(r => r.json());
+
+    document.getElementById('ventas-dia').textContent = `$${vDia.total}`;
+    document.getElementById('ventas-semana').textContent = `$${vSemana.total}`;
+    document.getElementById('ventas-mes').textContent = `$${vMes.total}`;
+
+    // PRODUCTO MAS VENDIDO (dia-semana-mes)
+    const pDia = await fetch(`${API_URL}/reportes/producto-mas-vendido-dia`, { headers }).then(r => r.json());
+    const pSemana = await fetch(`${API_URL}/reportes/producto-mas-vendido-semana`, { headers }).then(r => r.json());
+    const pMes = await fetch(`${API_URL}/reportes/producto-mas-vendido-mes`, { headers }).then(r => r.json());
+
+    document.getElementById('prod-dia').textContent = pDia.nombre;
+    document.getElementById('prod-semana').textContent = pSemana.nombre;
+    document.getElementById('prod-mes').textContent = pMes.nombre;
+  }
+
+  cargarDashboard();
 
   /* 
   ===================
