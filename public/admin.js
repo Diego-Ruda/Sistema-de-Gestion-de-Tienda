@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   =================================
   */
 
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'sistema-de-gestion-de-tienda-production.up.railway.app';
 
   const listaProductos = document.getElementById('lista-productos');
   const formProducto = document.getElementById('form-producto');

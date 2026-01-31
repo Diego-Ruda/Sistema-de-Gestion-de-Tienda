@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   */
   console.log('APP JS CARGADO');
 
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'sistema-de-gestion-de-tienda-production.up.railway.app';
   let modalEsLogin = false; 
   const modal = document.getElementById('modal');
   const token = localStorage.getItem('token');
