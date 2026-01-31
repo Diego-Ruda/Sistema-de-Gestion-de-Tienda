@@ -8,12 +8,6 @@ import { seedEmpleados } from './seed';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Puerto de Railway
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
-
-  console.log(`App listening on port ${port}`);
-
   app.enableCors();
 
   app.useGlobalPipes(
@@ -37,7 +31,8 @@ async function bootstrap() {
   const dataSource = app.get(DataSource);
   await seedEmpleados(dataSource);
 
-  await app.listen(3000);
-
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`App listening on port ${port}`);
 }
 bootstrap();
