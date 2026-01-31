@@ -7,6 +7,7 @@ console.log({
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',
+  url: process.env.DATABASE_URL,
   host: process.env.PGHOST,
   port: Number(process.env.PGPORT),
   username: process.env.PGUSER,
@@ -16,6 +17,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     rejectUnauthorized: false,
   },
   autoLoadEntities: true,
-  synchronize: false,
+  synchronize: true,
   migrations: [join(__dirname, 'migrations/*{.ts,.js}')],
 };
