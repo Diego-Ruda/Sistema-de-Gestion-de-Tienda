@@ -31,12 +31,11 @@ async function bootstrap() {
   const dataSource = app.get(DataSource);
   await seedEmpleados(dataSource);
 
-  app.enableCors({
-    origin: '*', // para desarrollo, luego especificar tu frontend
-  });
-
+  // Escucha una sola vez en el puerto
   const port = process.env.PORT || 3000;
   await app.listen(port);
+
   console.log(`App listening on port ${port}`);
 }
 bootstrap();
+
