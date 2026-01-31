@@ -9,6 +9,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD || '3810',
   database: process.env.DB_NAME || 'fastfood',
   autoLoadEntities: true,
-  synchronize: false,
+  synchronize: true,
   migrations: [join(__dirname, 'migrations/*{.ts,.js}')],
 };
